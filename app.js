@@ -4,7 +4,10 @@ const db = new Sequelize('employee', 'root', 'vaishveer19', {
   host: 'localhost',
   dialect: 'mysql'
 });
+const express = require('express');
+//const app = express();
 const http = require('http');
+const PORT = 5000;
 const server = http.createServer((req, res) => {
     // console.log(req);
     console.log(req.method);
@@ -16,7 +19,7 @@ const server = http.createServer((req, res) => {
     res.end(JSON.stringify({ firstName: "guru", lastName: "priya", employeeId: "2023", employeePlace: "rajapalayam", employeeQualification: "BE" }
     ));
 });
-const PORT = 5000;
+//const PORT = 5000;
 server.listen(PORT, () => console.log('Server running on ${PORT}'));
 const User = db.define('User',
  {
