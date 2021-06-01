@@ -4,23 +4,26 @@ const db = new Sequelize('employee', 'root', 'vaishveer19', {
   host: 'localhost',
   dialect: 'mysql'
 });
-const express = require('express');
-//const app = express();
-const http = require('http');
-const PORT = 5000;
-const server = http.createServer((req, res) => {
-    // console.log(req);
-    console.log(req.method);
-    const { headers, url, method } = req;
-    console.log(headers);
-    console.log(url);
-    console.log(method);
-    res.setHeader('Content-Type', 'application.json');
-    res.end(JSON.stringify({ firstName: "guru", lastName: "priya", employeeId: "2023", employeePlace: "rajapalayam", employeeQualification: "BE" }
-    ));
+const express = require('express')
+const app = express();
+const courses = [
+  { id: 1, name: 'computer science' },
+  { id: 2, name: 'biology' },
+  { id: 3, name: 'commerce' },
+  {id: 4, name: 'business maths' }
+]
+app.get('/',( req, res) => {
+    res.send('HEllo world');
 });
-//const PORT = 5000;
-server.listen(PORT, () => console.log('Server running on ${PORT}'));
+app.get('/api/courses', (req, res) => {
+    res.send(courses);
+});
+app.get('/api/posts/:id',(req, res)=> {
+    const course = courses.find(c=>c.id === parseInt(req.params.id))
+  if (!course) res.status(404).send('id not found')
+});
+const port = process.env.PORT || 5000;
+app.listen(port,()=>console.log('listening on port ${port}...'))
 const User = db.define('User',
  {
   firstName: {
