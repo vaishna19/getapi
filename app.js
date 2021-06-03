@@ -6,14 +6,12 @@ const db = new Sequelize('employee', 'root', 'vaishveer19', {
 });
 const express = require('express')
 const app = express();
+const bodyParser = require('body-parser');
 const courses = [
-  { id: 1, name: 'computer science' },
-  { id: 2, name: 'biology' },
-  { id: 3, name: 'commerce' },
-  {id: 4, name: 'business maths' }
+  { firstName:'vaishu', lastName: 'jasper',employeeId:'22' ,employeePlace:'udumalpet' , employeeQualification:"B.Tech"}
 ]
 app.get('/',( req, res) => {
-    res.send('HEllo world');
+    res.send('Hello world');
 });
 app.get('/api/courses', (req, res) => {
     res.send(courses);
@@ -37,7 +35,7 @@ const User = db.define('User',
     type: DataTypes.INTEGER            
     },
   employeePlace: {
-    type: DataTypes.STRING            
+    type: DataTypes.STRING
     },
   employeeQualification: {
     type: DataTypes.STRING            
@@ -61,11 +59,40 @@ const User1 = db.define('User1',
     type: DataTypes.STRING            
     },
   },
-
-  );
+);
+db.sync({
+    force: true
+})
+    .then(() => {
+        const jane = User.bulkCreate([
+            {
+                firstName: "Priya",
+                lastName: "Murugan",
+                employeeId: "22",
+                employeePlace: "Rjpm",
+                employeeQualification:"B.Tech"
+            }
+        ])
+    })
+  .catch((err) => console.log(err))
+app.get('/api/users',(req, res) => {
+  let sql = "SELECT * FROM User";
+  let query = db.query(sql, (err, results) => {
+    if(err) throw err;
+    res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
+  });
+});
+// let sql = "SELECT * FROM User";
+// let query = db.query(sql, (err, results) => {
+//   if (err) throw err;
+//   res.send(JSON.stringify({ "status": 200, "error": null, "response": results }))
+// });
 // User.hasOne(User, {
 //     foreignKey: "firstName"
 // });
 // User1.belongsTo(User1);
 
 db.sync()
+// module.exports = {
+//   getAllCompany
+// }
