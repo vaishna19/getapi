@@ -7,18 +7,12 @@ const db = new Sequelize('employee', 'root', 'vaishveer19', {
 const express = require('express')
 const app = express();
 const bodyParser = require('body-parser');
-const courses = [
-  { firstName:'vaishu', lastName: 'jasper',employeeId:'22' ,employeePlace:'udumalpet' , employeeQualification:"B.Tech"}
-]
-app.get('/',( req, res) => {
-    res.send('Hello world');
-});
-app.get('/api/courses', (req, res) => {
-    res.send(courses);
-});
-app.get('/api/posts/:id',(req, res)=> {
-    const course = courses.find(c=>c.id === parseInt(req.params.id))
-  if (!course) res.status(404).send('id not found')
+app.get("/", (req, res, next) => {
+    User.findAll().then(data => res.send({
+        success: "true",
+        message: "get method",
+        data,
+    })).catch(err => console.log(err));
 });
 const port = process.env.PORT || 5000;
 app.listen(port,()=>console.log('listening on port ${port}...'))
@@ -75,24 +69,11 @@ db.sync({
         ])
     })
   .catch((err) => console.log(err))
-app.get('/api/users',(req, res) => {
-  let sql = "SELECT * FROM User";
-  let query = db.query(sql, (err, results) => {
-    if(err) throw err;
-    res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-  });
-});
-// let sql = "SELECT * FROM User";
-// let query = db.query(sql, (err, results) => {
-//   if (err) throw err;
-//   res.send(JSON.stringify({ "status": 200, "error": null, "response": results }))
-// });
+  
+
 // User.hasOne(User, {
 //     foreignKey: "firstName"
 // });
 // User1.belongsTo(User1);
 
 db.sync()
-// module.exports = {
-//   getAllCompany
-// }
